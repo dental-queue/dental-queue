@@ -228,6 +228,16 @@ export default function Home() {
             </CardHeader>
             <CardContent className="text-center space-y-3">
               <p className="text-slate-600 font-medium">{formatDate(myQueue.date)}</p>
+
+              {/* Patient Details for Screenshot */}
+              {myQueue.patient && (
+                <div className="bg-white border rounded-md p-3 text-sm text-left space-y-1 mb-2 shadow-sm">
+                  <p><span className="text-slate-500 w-24 inline-block">รหัสพนักงาน:</span> <span className="font-semibold text-slate-800">{myQueue.patient.employeeId}</span></p>
+                  <p><span className="text-slate-500 w-24 inline-block">ชื่อ-สกุล:</span> <span className="font-semibold text-slate-800">{myQueue.patient.firstName} {myQueue.patient.lastName}</span></p>
+                  <p><span className="text-slate-500 w-24 inline-block">สถานที่:</span> <span className="font-semibold text-slate-800">{myQueue.patient.station}</span></p>
+                </div>
+              )}
+
               <div className="text-3xl font-bold text-slate-800">รอบ {myQueue.timeSlot}</div>
               <Badge className={getStatusColor(myQueue.status) + ' text-base px-4 py-1'}>
                 {getStatusText(myQueue.status)}

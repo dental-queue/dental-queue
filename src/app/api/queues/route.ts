@@ -79,6 +79,7 @@ export async function POST(request: Request) {
         // Create queue entry — @@unique([date, patientId]) prevents duplicate booking
         const newQueue = await tx.queue.create({
           data: { timeSlot, date, patientId: patient.id },
+          include: { patient: true }
         });
 
         return newQueue;
