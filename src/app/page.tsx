@@ -191,9 +191,9 @@ export default function Home() {
       
       const data = await res.json();
       if (res.ok) {
-        setMyQueue({ ...myQueue, status: 'CANCELLED' });
+        setMyQueue(null);
         if (selectedDate) fetchSlots(selectedDate, station);
-        alert('ยกเลิกคิวสำเร็จ');
+        alert('ยกเลิกคิวสำเร็จ คุณสามารถทำการจองคิวใหม่ได้ทันที');
       } else {
         alert(data.error || 'ไม่สามารถยกเลิกคิวได้');
       }
