@@ -17,33 +17,7 @@ export async function PATCH(
     const updatedQueue = await prisma.queue.update({
       where: { id: resolvedParams.id },
       data: { status },
-      include: { patient: true },
     });
-
-    // Send LINE Push Notification if status is IN_PROGRESS
-    if (status === 'IN_PROGRESS' && updatedQueue.patient.lineUserId) {
-      const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
-      if (token) {
-        try {
-          await fetch('https://api.line.me/v2/bot/message/push', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              to: updatedQueue.patient.lineUserId,
-              messages: [{
-                type: 'text',
-                text: `📢 แจ้งเตือนคิวทันตกรรม\nถึงคิวของคุณแล้วครับ!\n\nคิวรอบ: ${updatedQueue.timeSlot}\nสถานี: ${updatedQueue.patient.station}\n\nกรุณามาที่หน่วยทันตกรรมเคลื่อนที่ตอนนี้ได้เลยครับ`
-              }],
-            }),
-          });
-        } catch (error) {
-          console.error('Failed to send LINE push message', error);
-        }
-      }
-    }
 
     return NextResponse.json(updatedQueue);
   } catch (error) {
