@@ -235,10 +235,11 @@ export default function Home() {
 
               {myQueue.status === 'WAITING' && (
                 <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-md text-sm mt-4 text-left space-y-1">
-                  <p><strong>ข้อปฏิบัติ:</strong></p>
+                  <p><strong>ข้อปฏิบัติ (สำคัญ):</strong></p>
                   <ul className="list-disc pl-5">
                     <li>กรุณานำ<strong>บัตรประชาชนตัวจริง</strong>มาด้วย</li>
                     <li>กรุณามา<strong>ก่อนเวลา 15 นาที</strong></li>
+                    <li>กรณียกเลิกคิว ให้ยกเลิก<strong>ก่อนกำหนด 3 วัน</strong></li>
                   </ul>
                 </div>
               )}
