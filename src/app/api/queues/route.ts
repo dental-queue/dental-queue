@@ -50,6 +50,19 @@ export async function POST(request: Request) {
           throw new Error('SLOT_FULL');
         }
 
+        // Check for duplicate first name and last name across different employee IDs
+        const duplicateName = await tx.patient.findFirst({
+          where: {
+            firstName,
+            lastName,
+            employeeId: { not: employeeId },
+          }
+        });
+
+        if (duplicateName) {
+          throw new Error('DUPLICATE_NAME');
+        }
+
         // Find or create patient inside transaction
         let patient = await tx.patient.findUnique({ where: { employeeId } });
         if (!patient) {
@@ -87,6 +100,9 @@ export async function POST(request: Request) {
 
       return NextResponse.json(queue, { status: 201 });
     } catch (e: any) {
+      if (e.message === 'DUPLICATE_NAME') {
+        return NextResponse.json({ error: 'ชื่อ-นามสกุลนี้ ถูกใช้จองคิวไปแล้วในระบบ (ด้วยรหัสพนักงานอื่น)' }, { status: 400 });
+      }
       if (e.message === 'SLOT_FULL') {
         return NextResponse.json({ error: 'รอบเวลานี้เต็มแล้ว กรุณาเลือกรอบอื่น' }, { status: 400 });
       }
