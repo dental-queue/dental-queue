@@ -210,7 +210,8 @@ export default function Home() {
   return (
     <main className="bg-slate-50 p-4 md:p-8">
       <div className="max-w-md mx-auto space-y-6">
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-2 flex flex-col items-center">
+          <img src="/logo.png" alt="Company Logo" className="h-16 w-auto mb-2" />
           <h1 className="text-2xl font-bold text-slate-900">{systemConfig.PROJECT_NAME}</h1>
           <p className="text-slate-500">สำหรับพนักงานบริษัท</p>
           <p className="text-xs text-slate-400">ใช้สิทธิประกันสังคม 900 บ./ปี</p>

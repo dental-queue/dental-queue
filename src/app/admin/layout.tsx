@@ -73,5 +73,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  return <>{children}</>;
-}
+  return (
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+      <header className="bg-white border-b px-6 py-4 flex items-center gap-4">
+        <img src="/logo.png" alt="Company Logo" className="h-10 w-auto" />
+        <h1 className="text-xl font-bold text-slate-900">ระบบจัดการคิว (Admin)</h1>
+      </header>
+      <div className="flex-1">
+        {children}
+      </div>
+    </div>
+  );
