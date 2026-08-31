@@ -215,9 +215,20 @@ export default function Home() {
           <h1 className="text-2xl font-bold text-slate-900">{systemConfig.PROJECT_NAME}</h1>
           <p className="text-slate-500">สำหรับพนักงานบริษัท</p>
           <p className="text-xs text-slate-400">ใช้สิทธิประกันสังคม 900 บ./ปี</p>
-          {systemConfig.CREATOR_NAME && (
-            <p className="text-xs text-slate-400 mt-1 text-balance whitespace-pre-wrap">{systemConfig.CREATOR_NAME}</p>
-          )}
+          {systemConfig.CREATOR_NAME && (() => {
+            const parts = systemConfig.CREATOR_NAME.split(' บริษัท ');
+            if (parts.length > 1) {
+              return (
+                <div className="text-center mt-3 mb-1">
+                  <p className="text-xs text-slate-400 mb-1 leading-relaxed">{parts[0]}</p>
+                  <p className="font-semibold text-slate-700 text-[14px]">บริษัท {parts.slice(1).join(' บริษัท ')}</p>
+                </div>
+              );
+            }
+            return (
+              <p className="text-xs text-slate-400 mt-2 text-balance whitespace-pre-wrap">{systemConfig.CREATOR_NAME}</p>
+            );
+          })()}
         </div>
 
         {/* My Queue Display */}
