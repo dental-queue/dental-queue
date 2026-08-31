@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Patient {
+  id          String   @id @default(cuid())
+  employeeId  String   @unique
+  idCardLast4 String
+  firstName   String
+  lastName    String
+  phone       String
+  station     String   @default("HDQ-สำนักงานใหญ่")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  queues      Queue[]
+}
+
+model ClinicSetting {
+  id           String   @id @default(cuid())
+  date         DateTime
+  station      String   @default("HDQ-สำนักงานใหญ่")
+  startTime    String   // e.g., "08:00"
+  endTime      String   // e.g., "16:00"
+  slotDuration Int      // e.g., 30 (minutes)
+  bedsCount    Int      // e.g., 3
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([date, station])
+}
+
+model Queue {
+  id          String   @id @default(cuid())
+  timeSlot    String   // e.g., "08:00"
+  date        DateTime // Date of the queue
+  patientId   String
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  status      String   @default("WAITING") // WAITING, IN_PROGRESS, COMPLETED, CANCELLED
+  symptoms    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([date, patientId]) // Prevent user from booking twice on the same day
+}
+
+model SystemConfig {
+  key   String @id
+  value String
+}
