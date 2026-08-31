@@ -232,6 +232,16 @@ export default function Home() {
               <Badge className={getStatusColor(myQueue.status) + ' text-base px-4 py-1'}>
                 {getStatusText(myQueue.status)}
               </Badge>
+
+              {myQueue.status === 'WAITING' && (
+                <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-md text-sm mt-4 text-left space-y-1">
+                  <p><strong>ข้อปฏิบัติ:</strong></p>
+                  <ul className="list-disc pl-5">
+                    <li>กรุณานำ<strong>บัตรประชาชนตัวจริง</strong>มาด้วย</li>
+                    <li>กรุณามา<strong>ก่อนเวลา 15 นาที</strong></li>
+                  </ul>
+                </div>
+              )}
               
               <div className="pt-4 space-y-2">
                 {myQueue.status === 'WAITING' && (
