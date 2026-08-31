@@ -216,7 +216,7 @@ export default function Home() {
           <p className="text-slate-500">สำหรับพนักงานบริษัท</p>
           <p className="text-xs text-slate-400">ใช้สิทธิประกันสังคม 900 บ./ปี</p>
           {systemConfig.CREATOR_NAME && (
-            <p className="text-xs text-slate-400 mt-1">{systemConfig.CREATOR_NAME}</p>
+            <p className="text-xs text-slate-400 mt-1 text-balance whitespace-pre-wrap">{systemConfig.CREATOR_NAME}</p>
           )}
         </div>
 
