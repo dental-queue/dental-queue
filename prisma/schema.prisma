@@ -15,6 +15,7 @@ model Patient {
   lastName    String
   phone       String
   station     String   @default("HDQ-สำนักงานใหญ่")
+  lineUserId  String?  // Store LINE User ID for notifications
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   queues      Queue[]
@@ -46,8 +47,6 @@ model Queue {
   symptoms    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
-  @@unique([date, patientId]) // Prevent user from booking twice on the same day
 }
 
 model SystemConfig {
