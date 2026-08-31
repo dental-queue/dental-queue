@@ -31,6 +31,7 @@ model ClinicSetting {
   breakEndTime   String? // e.g., "13:00"
   slotDuration Int      // e.g., 30 (minutes)
   bedsCount    Int      // e.g., 3
+  isOpen       Boolean  @default(true) // Open or closed for booking
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

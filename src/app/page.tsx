@@ -58,7 +58,7 @@ export default function Home() {
     try {
       const res = await fetch('/api/settings');
       const data = await res.json();
-      setAvailableDates(Array.isArray(data) ? data : []);
+      setAvailableDates(Array.isArray(data) ? data.filter((d: any) => d.isOpen !== false) : []);
 
       const confRes = await fetch('/api/config');
       const confData = await confRes.json();

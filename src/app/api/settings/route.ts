@@ -89,3 +89,17 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: 'Failed to delete setting' }, { status: 500 });
   }
 }
+
+export async function PATCH(request: Request) {
+  try {
+    const { id, isOpen } = await request.json();
+    await prisma.clinicSetting.update({
+      where: { id },
+      data: { isOpen }
+    });
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    console.error('Failed to update setting', error);
+    return NextResponse.json({ error: 'Failed to update setting' }, { status: 500 });
+  }
+}

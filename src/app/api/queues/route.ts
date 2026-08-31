@@ -19,8 +19,8 @@ export async function POST(request: Request) {
       where: { date: { gte: date, lte: endOfDay } },
     });
 
-    if (!setting) {
-      return NextResponse.json({ error: 'Clinic is not open on that date' }, { status: 400 });
+    if (!setting || !setting.isOpen) {
+      return NextResponse.json({ error: 'วันนี้ปิดรับการจองคิวแล้ว' }, { status: 400 });
     }
 
     // 2. Verify patient identity (outside transaction — read-only)

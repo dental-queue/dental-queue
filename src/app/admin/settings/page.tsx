@@ -16,6 +16,7 @@ type ClinicSetting = {
   slotDuration: number;
   bedsCount: number;
   station: string;
+  isOpen: boolean;
 };
 
 export default function SettingsPage() {
@@ -114,6 +115,19 @@ export default function SettingsPage() {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id }),
+      });
+      fetchData();
+    } catch {
+      alert('เกิดข้อผิดพลาด');
+    }
+  };
+
+  const handleToggleStatus = async (id: string, currentStatus: boolean) => {
+    try {
+      await fetch('/api/settings', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, isOpen: !currentStatus }),
       });
       fetchData();
     } catch {
@@ -250,17 +264,27 @@ export default function SettingsPage() {
             ) : (
               <div className="space-y-3">
                 {settings.map(s => (
-                  <div key={s.id} className="flex items-center justify-between p-3 border rounded-lg bg-white">
-                    <div>
-                      <p className="font-medium">{formatDate(s.date)}</p>
+                  <div key={s.id} className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-2xl ${s.isOpen ? 'bg-white border-slate-200' : 'bg-slate-50 border-slate-300 opacity-80'}`}>
+                    <div className="mb-3 sm:mb-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <p className="font-medium text-slate-800">{formatDate(s.date)}</p>
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${s.isOpen ? 'bg-green-100 text-green-700' : 'bg-slate-200 text-slate-600'}`}>
+                          {s.isOpen ? 'เปิดจอง' : 'ปิดจอง'}
+                        </span>
+                      </div>
                       <p className="text-sm font-semibold text-blue-600 mb-1">{s.station || 'HDQ-สำนักงานใหญ่'}</p>
                       <p className="text-sm text-slate-500">
                         เวลาทำการ: {s.startTime} - {s.endTime} | พัก: {s.breakStartTime || '-'} - {s.breakEndTime || '-'} | ทุก {s.slotDuration} นาที | {s.bedsCount} เตียง
                       </p>
                     </div>
-                    <Button size="sm" variant="destructive" onClick={() => handleDelete(s.id)}>
-                      ลบ
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button size="sm" variant={s.isOpen ? "outline" : "default"} onClick={() => handleToggleStatus(s.id, s.isOpen)}>
+                        {s.isOpen ? 'ปิดรับจอง' : 'เปิดรับจอง'}
+                      </Button>
+                      <Button size="sm" variant="destructive" onClick={() => handleDelete(s.id)}>
+                        ลบ
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>

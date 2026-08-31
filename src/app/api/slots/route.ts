@@ -23,7 +23,7 @@ export async function GET(request: Request) {
       },
     });
 
-    if (!setting) {
+    if (!setting || !setting.isOpen) {
       return NextResponse.json([]);
     }
 
