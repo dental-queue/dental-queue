@@ -11,6 +11,8 @@ type ClinicSetting = {
   date: string;
   startTime: string;
   endTime: string;
+  breakStartTime?: string;
+  breakEndTime?: string;
   slotDuration: number;
   bedsCount: number;
   station: string;
@@ -22,6 +24,8 @@ export default function SettingsPage() {
   const [station, setStation] = useState('HDQ-สำนักงานใหญ่');
   const [startTime, setStartTime] = useState('08:00');
   const [endTime, setEndTime] = useState('16:00');
+  const [breakStartTime, setBreakStartTime] = useState('12:00');
+  const [breakEndTime, setBreakEndTime] = useState('13:00');
   const [slotDuration, setSlotDuration] = useState('30');
   const [bedsCount, setBedsCount] = useState('3');
   const [loading, setLoading] = useState(true);
@@ -87,7 +91,7 @@ export default function SettingsPage() {
       const res = await fetch('/api/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ date, station, startTime, endTime, slotDuration, bedsCount }),
+        body: JSON.stringify({ date, station, startTime, endTime, breakStartTime, breakEndTime, slotDuration, bedsCount }),
       });
       if (res.ok) {
         setDate('');
@@ -210,6 +214,16 @@ export default function SettingsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
+                  <Label htmlFor="breakStartTime">เวลาเริ่มพักเที่ยง</Label>
+                  <Input id="breakStartTime" type="time" value={breakStartTime} onChange={e => setBreakStartTime(e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="breakEndTime">เวลาสิ้นสุดพักเที่ยง</Label>
+                  <Input id="breakEndTime" type="time" value={breakEndTime} onChange={e => setBreakEndTime(e.target.value)} />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
                   <Label htmlFor="slotDuration">ระยะเวลาต่อเคส (นาที)</Label>
                   <Input id="slotDuration" type="number" min="1" value={slotDuration} onChange={e => setSlotDuration(e.target.value)} required />
                 </div>
@@ -241,7 +255,7 @@ export default function SettingsPage() {
                       <p className="font-medium">{formatDate(s.date)}</p>
                       <p className="text-sm font-semibold text-blue-600 mb-1">{s.station || 'HDQ-สำนักงานใหญ่'}</p>
                       <p className="text-sm text-slate-500">
-                        {s.startTime} - {s.endTime} | ทุก {s.slotDuration} นาที | {s.bedsCount} เตียง
+                        เวลาทำการ: {s.startTime} - {s.endTime} | พัก: {s.breakStartTime || '-'} - {s.breakEndTime || '-'} | ทุก {s.slotDuration} นาที | {s.bedsCount} เตียง
                       </p>
                     </div>
                     <Button size="sm" variant="destructive" onClick={() => handleDelete(s.id)}>

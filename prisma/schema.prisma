@@ -26,6 +26,8 @@ model ClinicSetting {
   station      String   @default("HDQ-สำนักงานใหญ่")
   startTime    String   // e.g., "08:00"
   endTime      String   // e.g., "16:00"
+  breakStartTime String? // e.g., "12:00"
+  breakEndTime   String? // e.g., "13:00"
   slotDuration Int      // e.g., 30 (minutes)
   bedsCount    Int      // e.g., 3
   createdAt    DateTime @default(now())

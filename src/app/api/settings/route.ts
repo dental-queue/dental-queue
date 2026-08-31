@@ -51,6 +51,8 @@ export async function POST(request: Request) {
         data: {
           startTime: data.startTime,
           endTime: data.endTime,
+          breakStartTime: data.breakStartTime || "12:00",
+          breakEndTime: data.breakEndTime || "13:00",
           slotDuration: parseInt(data.slotDuration),
           bedsCount: parseInt(data.bedsCount),
         }
@@ -62,6 +64,8 @@ export async function POST(request: Request) {
           station: station,
           startTime: data.startTime,
           endTime: data.endTime,
+          breakStartTime: data.breakStartTime || "12:00",
+          breakEndTime: data.breakEndTime || "13:00",
           slotDuration: parseInt(data.slotDuration),
           bedsCount: parseInt(data.bedsCount),
         }

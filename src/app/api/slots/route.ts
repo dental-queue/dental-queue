@@ -35,6 +35,16 @@ export async function GET(request: Request) {
     let currentMins = h * 60 + m;
     const endMins = endH * 60 + endM;
 
+    let breakStartMins = 720; // Default 12:00
+    let breakEndMins = 780; // Default 13:00
+
+    if (setting.breakStartTime && setting.breakEndTime) {
+      const [bsH, bsM] = setting.breakStartTime.split(':').map(Number);
+      breakStartMins = bsH * 60 + bsM;
+      const [beH, beM] = setting.breakEndTime.split(':').map(Number);
+      breakEndMins = beH * 60 + beM;
+    }
+
     while (currentMins + setting.slotDuration <= endMins) {
       const slotH = Math.floor(currentMins / 60).toString().padStart(2, '0');
       const slotM = (currentMins % 60).toString().padStart(2, '0');
@@ -43,7 +53,9 @@ export async function GET(request: Request) {
       const nextH = Math.floor(nextMins / 60).toString().padStart(2, '0');
       const nextM = (nextMins % 60).toString().padStart(2, '0');
 
-      const isLunchBreak = (currentMins < 780) && (nextMins > 720);
+      // Check if slot overlaps with break time
+      // The slot is invalid if it starts before break ends AND ends after break starts
+      const isLunchBreak = (currentMins < breakEndMins) && (nextMins > breakStartMins);
       
       if (!isLunchBreak) {
         slots.push(`${slotH}:${slotM} - ${nextH}:${nextM}`);
