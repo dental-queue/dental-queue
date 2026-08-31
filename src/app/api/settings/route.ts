@@ -45,6 +45,17 @@ export async function POST(request: Request) {
       }
     });
 
+    let bookingStartDate = null;
+    let bookingEndDate = null;
+    if (data.bookingStartDate) {
+      bookingStartDate = new Date(data.bookingStartDate);
+      bookingStartDate.setHours(0, 0, 0, 0);
+    }
+    if (data.bookingEndDate) {
+      bookingEndDate = new Date(data.bookingEndDate);
+      bookingEndDate.setHours(23, 59, 59, 999);
+    }
+
     if (setting) {
       await prisma.clinicSetting.update({
         where: { id: setting.id },
@@ -55,6 +66,8 @@ export async function POST(request: Request) {
           breakEndTime: data.breakEndTime || "13:00",
           slotDuration: parseInt(data.slotDuration),
           bedsCount: parseInt(data.bedsCount),
+          bookingStartDate,
+          bookingEndDate
         }
       });
     } else {
@@ -68,6 +81,8 @@ export async function POST(request: Request) {
           breakEndTime: data.breakEndTime || "13:00",
           slotDuration: parseInt(data.slotDuration),
           bedsCount: parseInt(data.bedsCount),
+          bookingStartDate,
+          bookingEndDate
         }
       });
     }

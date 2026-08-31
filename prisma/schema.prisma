@@ -32,6 +32,8 @@ model ClinicSetting {
   slotDuration Int      // e.g., 30 (minutes)
   bedsCount    Int      // e.g., 3
   isOpen       Boolean  @default(true) // Open or closed for booking
+  bookingStartDate DateTime? // Date when booking opens for this clinic day
+  bookingEndDate   DateTime? // Date when booking closes for this clinic day
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

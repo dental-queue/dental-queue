@@ -23,6 +23,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'วันนี้ปิดรับการจองคิวแล้ว' }, { status: 400 });
     }
 
+    const now = new Date();
+    if (setting.bookingStartDate && now < new Date(setting.bookingStartDate)) {
+      return NextResponse.json({ error: 'ยังไม่ถึงเวลาเปิดรับจองสำหรับคิววันนี้' }, { status: 400 });
+    }
+    if (setting.bookingEndDate && now > new Date(setting.bookingEndDate)) {
+      return NextResponse.json({ error: 'หมดเขตการจองสำหรับคิววันนี้แล้ว' }, { status: 400 });
+    }
+
     // 2. Verify patient identity (outside transaction — read-only)
     let existingPatient = await prisma.patient.findUnique({ where: { employeeId } });
     if (existingPatient && existingPatient.idCardLast4 !== idCardLast4) {

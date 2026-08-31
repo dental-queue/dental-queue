@@ -27,6 +27,14 @@ export async function GET(request: Request) {
       return NextResponse.json([]);
     }
 
+    const now = new Date();
+    if (setting.bookingStartDate && now < new Date(setting.bookingStartDate)) {
+      return NextResponse.json([]);
+    }
+    if (setting.bookingEndDate && now > new Date(setting.bookingEndDate)) {
+      return NextResponse.json([]);
+    }
+
     // Generate all slots
     const slots = [];
     let [h, m] = setting.startTime.split(':').map(Number);

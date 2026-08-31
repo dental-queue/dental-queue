@@ -58,7 +58,13 @@ export default function Home() {
     try {
       const res = await fetch('/api/settings');
       const data = await res.json();
-      setAvailableDates(Array.isArray(data) ? data.filter((d: any) => d.isOpen !== false) : []);
+      setAvailableDates(Array.isArray(data) ? data.filter((d: any) => {
+        if (d.isOpen === false) return false;
+        const now = new Date();
+        if (d.bookingStartDate && now < new Date(d.bookingStartDate)) return false;
+        if (d.bookingEndDate && now > new Date(d.bookingEndDate)) return false;
+        return true;
+      }) : []);
 
       const confRes = await fetch('/api/config');
       const confData = await confRes.json();

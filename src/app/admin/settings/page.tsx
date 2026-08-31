@@ -17,6 +17,8 @@ type ClinicSetting = {
   bedsCount: number;
   station: string;
   isOpen: boolean;
+  bookingStartDate?: string;
+  bookingEndDate?: string;
 };
 
 export default function SettingsPage() {
@@ -29,6 +31,8 @@ export default function SettingsPage() {
   const [breakEndTime, setBreakEndTime] = useState('13:00');
   const [slotDuration, setSlotDuration] = useState('30');
   const [bedsCount, setBedsCount] = useState('3');
+  const [bookingStartDate, setBookingStartDate] = useState('');
+  const [bookingEndDate, setBookingEndDate] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -92,10 +96,12 @@ export default function SettingsPage() {
       const res = await fetch('/api/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ date, station, startTime, endTime, breakStartTime, breakEndTime, slotDuration, bedsCount }),
+        body: JSON.stringify({ date, station, startTime, endTime, breakStartTime, breakEndTime, slotDuration, bedsCount, bookingStartDate: bookingStartDate || null, bookingEndDate: bookingEndDate || null }),
       });
       if (res.ok) {
         setDate('');
+        setBookingStartDate('');
+        setBookingEndDate('');
         fetchData();
         alert('เพิ่มวันให้บริการสำเร็จ');
       } else {
@@ -246,6 +252,16 @@ export default function SettingsPage() {
                   <Input id="bedsCount" type="number" min="1" value={bedsCount} onChange={e => setBedsCount(e.target.value)} required />
                 </div>
               </div>
+              <div className="grid grid-cols-2 gap-4 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                <div className="space-y-2">
+                  <Label htmlFor="bookingStartDate">วันที่เริ่มเปิดจอง (ไม่บังคับ)</Label>
+                  <Input id="bookingStartDate" type="date" value={bookingStartDate} onChange={e => setBookingStartDate(e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="bookingEndDate">วันสุดท้ายที่จองได้ (ไม่บังคับ)</Label>
+                  <Input id="bookingEndDate" type="date" value={bookingEndDate} onChange={e => setBookingEndDate(e.target.value)} />
+                </div>
+              </div>
               <Button type="submit" className="w-full" disabled={saving}>
                 {saving ? 'กำลังบันทึก...' : 'เพิ่มวันให้บริการ'}
               </Button>
@@ -276,6 +292,9 @@ export default function SettingsPage() {
                       <p className="text-sm text-slate-500">
                         เวลาทำการ: {s.startTime} - {s.endTime} | พัก: {s.breakStartTime || '-'} - {s.breakEndTime || '-'} | ทุก {s.slotDuration} นาที | {s.bedsCount} เตียง
                       </p>
+                      {(s as any).bookingStartDate && (
+                        <p className="text-xs text-orange-600 mt-1">เปิดจอง: {formatDate((s as any).bookingStartDate)} - {(s as any).bookingEndDate ? formatDate((s as any).bookingEndDate) : 'ไม่มีกำหนด'}</p>
+                      )}
                     </div>
                     <div className="flex gap-2">
                       <Button size="sm" variant={s.isOpen ? "outline" : "default"} onClick={() => handleToggleStatus(s.id, s.isOpen)}>
