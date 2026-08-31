@@ -125,6 +125,7 @@ export async function GET(request: Request) {
 
     if (employeeId && idCardLast4) {
       whereClause.patient = { employeeId, idCardLast4 };
+      whereClause.status = { not: 'CANCELLED' }; // Do not show cancelled queues to patient
       // For patient check, if no specific date is given, only show today and future queues
       if (!dateParam) {
         const startOfToday = new Date();
