@@ -140,6 +140,24 @@ export default function SettingsPage() {
       alert('เกิดข้อผิดพลาด');
     }
   };
+  const handleEdit = (setting: ClinicSetting) => {
+    // format date to YYYY-MM-DD for input type date
+    setDate(new Date(setting.date).toISOString().split('T')[0]);
+    setStation(setting.station);
+    setStartTime(setting.startTime);
+    setEndTime(setting.endTime);
+    setBreakStartTime(setting.breakStartTime || '');
+    setBreakEndTime(setting.breakEndTime || '');
+    setSlotDuration(setting.slotDuration.toString());
+    setBedsCount(setting.bedsCount.toString());
+    if (setting.bookingStartDate) setBookingStartDate(new Date(setting.bookingStartDate).toISOString().split('T')[0]);
+    else setBookingStartDate('');
+    if (setting.bookingEndDate) setBookingEndDate(new Date(setting.bookingEndDate).toISOString().split('T')[0]);
+    else setBookingEndDate('');
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr);
@@ -263,7 +281,7 @@ export default function SettingsPage() {
                 </div>
               </div>
               <Button type="submit" className="w-full" disabled={saving}>
-                {saving ? 'กำลังบันทึก...' : 'เพิ่มวันให้บริการ'}
+                {saving ? 'กำลังบันทึก...' : 'บันทึก / เพิ่มวันให้บริการ'}
               </Button>
             </form>
           </CardContent>
@@ -297,6 +315,9 @@ export default function SettingsPage() {
                       )}
                     </div>
                     <div className="flex gap-2">
+                      <Button size="sm" variant="secondary" onClick={() => handleEdit(s)}>
+                        แก้ไข
+                      </Button>
                       <Button size="sm" variant={s.isOpen ? "outline" : "default"} onClick={() => handleToggleStatus(s.id, s.isOpen)}>
                         {s.isOpen ? 'ปิดรับจอง' : 'เปิดรับจอง'}
                       </Button>
