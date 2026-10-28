@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "โครงการทันตกรรมเคลื่อนที่ | Pattaya Aviation",
-  description: "ระบบจองคิวทันตกรรมเคลื่อนที่ สำหรับพนักงานบริษัท Pattaya Aviation",
+  title: "ระบบจองคิวสวัสดิการพนักงาน | Pattaya Aviation",
+  description: "ระบบจองคิวสวัสดิการพนักงาน สำหรับพนักงานบริษัท Pattaya Aviation",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
