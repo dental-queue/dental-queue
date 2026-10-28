@@ -220,7 +220,6 @@ export default function Home() {
           <img src="/logo.png" alt="Company Logo" className="h-16 w-auto mb-2" />
           <h1 className="text-2xl font-bold text-slate-900">{systemConfig.PROJECT_NAME}</h1>
           <p className="text-slate-500">สำหรับพนักงานบริษัท</p>
-          <p className="text-xs text-slate-400">ใช้สิทธิประกันสังคม 900 บ./ปี</p>
           {systemConfig.CREATOR_NAME && (() => {
             const parts = systemConfig.CREATOR_NAME.split(' บริษัท ');
             if (parts.length > 1) {
