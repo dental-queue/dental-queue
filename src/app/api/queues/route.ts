@@ -80,11 +80,15 @@ export async function POST(request: Request) {
             data: { employeeId, idCardLast4, firstName, lastName, phone, station },
           });
         } else {
-          // Check if patient already has an active queue across ANY date
+          // Check if patient already has an active UPCOMING queue (today or future)
+          const startOfToday = new Date();
+          startOfToday.setHours(0, 0, 0, 0);
+
           const activeQueue = await tx.queue.findFirst({
             where: { 
               patientId: patient.id,
-              status: { not: 'CANCELLED' }
+              status: { notIn: ['CANCELLED', 'COMPLETED'] },
+              date: { gte: startOfToday }
             }
           });
 

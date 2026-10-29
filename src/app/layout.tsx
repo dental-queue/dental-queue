@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "ระบบจองคิวสวัสดิการพนักงาน | Pattaya Aviation",
-  description: "ระบบจองคิวสวัสดิการพนักงาน สำหรับพนักงานบริษัท Pattaya Aviation",
+  description: "ระบบลงทะเบียนและจองคิวสวัสดิการออนไลน์ สำหรับพนักงานบริษัท พัทยา เอวิเอชั่น จำกัด",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
