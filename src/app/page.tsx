@@ -51,7 +51,7 @@ export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [systemConfig, setSystemConfig] = useState({
-    PROJECT_NAME: 'หน่วยทันตกรรมเคลื่อนที่',
+    PROJECT_NAME: 'ระบบจองคิวรับบริการ',
     CREATOR_NAME: ''
   });
 
@@ -167,7 +167,7 @@ export default function Home() {
   const getStatusText = (status: string) => {
     switch (status) {
       case 'WAITING': return 'รอรับบริการ';
-      case 'IN_PROGRESS': return 'กำลังเรียกตรวจ';
+      case 'IN_PROGRESS': return 'กำลังรับบริการ';
       case 'COMPLETED': return 'เสร็จสิ้น';
       case 'CANCELLED': return 'ยกเลิก';
       default: return status;

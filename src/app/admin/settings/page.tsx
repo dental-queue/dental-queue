@@ -37,7 +37,7 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
 
   // General Settings State
-  const [projectName, setProjectName] = useState('หน่วยทันตกรรมเคลื่อนที่');
+  const [projectName, setProjectName] = useState('ระบบจองคิวรับบริการ');
   const [creatorName, setCreatorName] = useState('');
   const [adminPassword, setAdminPassword] = useState('admin1234');
   const [savingConfig, setSavingConfig] = useState(false);
@@ -171,7 +171,7 @@ export default function SettingsPage() {
       <div className="max-w-3xl mx-auto space-y-6">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">ตั้งค่าคลินิก</h1>
+            <h1 className="text-3xl font-bold text-slate-900">ตั้งค่าระบบและรอบเวลา</h1>
             <p className="text-slate-500">กำหนดวันที่และเวลาให้บริการ</p>
           </div>
           <Button variant="outline" onClick={() => window.location.href = '/admin'}>
@@ -262,11 +262,11 @@ export default function SettingsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="slotDuration">ระยะเวลาต่อเคส (นาที)</Label>
+                  <Label htmlFor="slotDuration">ระยะเวลาต่อรอบ (นาที)</Label>
                   <Input id="slotDuration" type="number" min="1" value={slotDuration} onChange={e => setSlotDuration(e.target.value)} required />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="bedsCount">จำนวนเตียง</Label>
+                  <Label htmlFor="bedsCount">จำนวนรับต่อรอบ (ที่)</Label>
                   <Input id="bedsCount" type="number" min="1" value={bedsCount} onChange={e => setBedsCount(e.target.value)} required />
                 </div>
               </div>
@@ -308,7 +308,7 @@ export default function SettingsPage() {
                       </div>
                       <p className="text-sm font-semibold text-blue-600 mb-1">{s.station || 'HDQ-สำนักงานใหญ่'}</p>
                       <p className="text-sm text-slate-500">
-                        เวลาทำการ: {s.startTime} - {s.endTime} | พัก: {s.breakStartTime || '-'} - {s.breakEndTime || '-'} | ทุก {s.slotDuration} นาที | {s.bedsCount} เตียง
+                        เวลาทำการ: {s.startTime} - {s.endTime} | พัก: {s.breakStartTime || '-'} - {s.breakEndTime || '-'} | ทุก {s.slotDuration} นาที | {s.bedsCount} ที่/รอบ
                       </p>
                       {(s as any).bookingStartDate && (
                         <p className="text-xs text-orange-600 mt-1">เปิดจอง: {formatDate((s as any).bookingStartDate)} - {(s as any).bookingEndDate ? formatDate((s as any).bookingEndDate) : 'ไม่มีกำหนด'}</p>

@@ -95,7 +95,7 @@ export default function AdminDashboard() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'WAITING': return <Badge className="bg-yellow-500">รอรับบริการ</Badge>;
-      case 'IN_PROGRESS': return <Badge className="bg-blue-500">กำลังตรวจ</Badge>;
+      case 'IN_PROGRESS': return <Badge className="bg-blue-500">กำลังรับบริการ</Badge>;
       case 'COMPLETED': return <Badge className="bg-green-500">เสร็จสิ้น</Badge>;
       case 'CANCELLED': return <Badge className="bg-red-500">ยกเลิก</Badge>;
       default: return <Badge>{status}</Badge>;
@@ -118,7 +118,7 @@ export default function AdminDashboard() {
       q.patient.phone,
       q.patient.station,
       q.status === 'WAITING' ? 'รอรับบริการ' : 
-      q.status === 'IN_PROGRESS' ? 'กำลังตรวจ' : 
+      q.status === 'IN_PROGRESS' ? 'กำลังรับบริการ' : 
       q.status === 'COMPLETED' ? 'เสร็จสิ้น' : 'ยกเลิก'
     ]);
     
@@ -133,7 +133,7 @@ export default function AdminDashboard() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `dental_queues_${selectedDate}.csv`);
+    link.setAttribute('download', `booking_queues_${selectedDate}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -144,15 +144,15 @@ export default function AdminDashboard() {
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">จัดการคิวทันตกรรม</h1>
+            <h1 className="text-3xl font-bold text-slate-900">จัดการคิวผู้รับบริการ</h1>
             <p className="text-slate-500">สำหรับเจ้าหน้าที่</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={() => window.location.href = '/admin/settings'}>
-              ตั้งค่าคลินิก
+              ตั้งค่าระบบ
             </Button>
             <Button variant="outline" onClick={() => window.open('/', '_blank')}>
-              ดูหน้าผู้ป่วย
+              ดูหน้าลงทะเบียน
             </Button>
           </div>
         </div>
@@ -229,7 +229,7 @@ export default function AdminDashboard() {
                           )}
                           {queue.status === 'IN_PROGRESS' && (
                             <Button size="sm" className="bg-green-600 hover:bg-green-700" onClick={() => updateStatus(queue.id, 'COMPLETED')}>
-                              ตรวจเสร็จสิ้น
+                              เสร็จสิ้น
                             </Button>
                           )}
                           <Button size="sm" variant="ghost" className="text-slate-400 hover:text-red-500 hover:bg-red-50" onClick={() => hardDeleteQueue(queue.id)} title="ลบข้อมูลถาวร (ลบเทส)">
