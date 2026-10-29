@@ -41,6 +41,7 @@ export default function Home() {
 
   // Form state
   const [employeeId, setEmployeeId] = useState('');
+  const [isNewEmployee, setIsNewEmployee] = useState(false);
   const [idCardLast4, setIdCardLast4] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -130,12 +131,13 @@ export default function Home() {
     }
 
     setIsSubmitting(true);
+    const finalEmployeeId = isNewEmployee || !employeeId.trim() ? phone : employeeId.trim();
     try {
       const res = await fetch('/api/queues', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          employeeId,
+          employeeId: finalEmployeeId,
           idCardLast4,
           firstName,
           lastName,
@@ -190,8 +192,8 @@ export default function Home() {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          employeeId: searchEmpId || employeeId, 
-          idCardLast4: searchIdCard || idCardLast4 
+          employeeId: myQueue?.patient?.employeeId || searchEmpId || employeeId || phone, 
+          idCardLast4: myQueue?.patient?.idCardLast4 || searchIdCard || idCardLast4 
         }),
       });
       
@@ -293,7 +295,7 @@ export default function Home() {
               <CardContent>
                 <form onSubmit={handleSearch} className="space-y-4">
                   <div className="space-y-2">
-                    <Label>รหัสพนักงาน (ตัวเลขเท่านั้น) <span className="text-red-500">*</span></Label>
+                    <Label>รหัสพนักงาน (พนักงานใหม่ที่ยังไม่มีรหัส ให้กรอกเบอร์โทร) <span className="text-red-500">*</span></Label>
                     <Input
                       type="text" inputMode="numeric"
                       value={searchEmpId}
@@ -334,13 +336,26 @@ export default function Home() {
                   {/* Personal Info */}
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label>รหัสพนักงาน <span className="text-red-500">*</span></Label>
+                      <Label>รหัสพนักงาน {!isNewEmployee && <span className="text-red-500">*</span>}</Label>
                       <Input
                         type="text" inputMode="numeric"
-                        value={employeeId}
+                        value={isNewEmployee ? '' : employeeId}
                         onChange={e => setEmployeeId(e.target.value.replace(/\D/g, ''))}
-                        required
+                        placeholder={isNewEmployee ? 'ใช้เบอร์โทรแทนรหัสอัตโนมัติ' : 'เว้นว่างได้หากยังไม่มี'}
+                        disabled={isNewEmployee}
                       />
+                      <label className="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer select-none pt-0.5">
+                        <input
+                          type="checkbox"
+                          checked={isNewEmployee}
+                          onChange={e => {
+                            setIsNewEmployee(e.target.checked);
+                            if (e.target.checked) setEmployeeId('');
+                          }}
+                          className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        พนักงานใหม่ (ยังไม่มีรหัส)
+                      </label>
                     </div>
                     <div className="space-y-2">
                       <Label>บัตร ปชช. 4 ตัวท้าย <span className="text-red-500">*</span></Label>
